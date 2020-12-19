@@ -27,10 +27,8 @@ public class Android : MonoBehaviour
     [SerializeField] public GameObject registrar;
 
     string DatabaseName = "TurMap.db";
-    // Start is called before the first frame update
     void Start()
     {
-        //Application database Path android
         string filepath = Application.persistentDataPath + "/" + DatabaseName;
         if (!File.Exists(filepath))
         {
@@ -44,16 +42,13 @@ public class Android : MonoBehaviour
         dbconn = new SqliteConnection(conn);
         dbconn.Open();
 
-        
-        //  reader_function();
     }
-    //Insert
+
     public void insert_button()
     {
         insert_function(t_name.text, t_Address.text, t_contra1.text);
 
     }
-    //Search 
     public void Search_button()
     {
         data_staff.text = "";
@@ -61,21 +56,18 @@ public class Android : MonoBehaviour
 
     }
 
-    //Found to Update 
     public void F_to_update_button()
     {
         data_staff.text = "";
         F_to_update_function(t_name.text);
 
     }
-    //Update
     public void Update_button()
     {
         update_function(t_name.text, t_Address.text, t_contra1.text);
 
     }
 
-    //Delete
     public void Delete_button()
     {
         data_staff.text = "";
@@ -83,12 +75,11 @@ public class Android : MonoBehaviour
 
     }
 
-    //Insert To Database
     private void insert_function(string name, string Address, string contra)
     {
         using (dbconn = new SqliteConnection(conn))
         {
-            dbconn.Open(); //Open connection to the database.
+            dbconn.Open(); 
             dbcmd = dbconn.CreateCommand();
             sqlQuery = string.Format("insert into usuarios (nombre, correo, contra) values (\"{0}\",\"{1}\",\"{2}\")", name, Address, contra);// table name
             dbcmd.CommandText = sqlQuery;
@@ -99,23 +90,20 @@ public class Android : MonoBehaviour
         Debug.Log("Insert Hecho  ");
         ver_login();
 
-        //reader_function();
+   
     }
-    //Read All Data For To Database
     private void reader_function()
     {
-        // int idreaders ;
         string Namereaders, Addressreaders;
         using (dbconn = new SqliteConnection(conn))
         {
-            dbconn.Open(); //Open connection to the database.
+            dbconn.Open(); 
             IDbCommand dbcmd = dbconn.CreateCommand();
             string sqlQuery = "SELECT  Name, Address " + "FROM Usuarios";// table name
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                // idreaders = reader.GetString(1);
                 Namereaders = reader.GetString(0);
                 Addressreaders = reader.GetString(1);
 
@@ -127,11 +115,9 @@ public class Android : MonoBehaviour
             dbcmd.Dispose();
             dbcmd = null;
             dbconn.Close();
-            //       dbconn = null;
 
         }
     }
-    //Search on Database by ID
     private void Search_function(string nombre)
     {
         if (nombre == "" || t_contra.text == "") Debug.Log("Ingrese todos los datos");
@@ -139,14 +125,13 @@ public class Android : MonoBehaviour
             using (dbconn = new SqliteConnection(conn))
             {
                 string Name_readers_Search = "", Address_readers_Search = "", contra = "";
-                dbconn.Open(); //Open connection to the database.
+                dbconn.Open(); 
                 IDbCommand dbcmd = dbconn.CreateCommand();
                 string sqlQuery = "SELECT * FROM usuarios where nombre='" + nombre + "'";// table name
                 dbcmd.CommandText = sqlQuery;
                 IDataReader reader = dbcmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    //  string id = reader.GetString(0);
                     Name_readers_Search = reader.GetString(0);
                     Address_readers_Search = reader.GetString(1);
                     contra = reader.GetString(2);
@@ -179,14 +164,12 @@ public class Android : MonoBehaviour
 
     }
 
-
-    //Search on Database by ID
     private void F_to_update_function(string Search_by_id)
     {
         using (dbconn = new SqliteConnection(conn))
         {
             string Name_readers_Search, Address_readers_Search;
-            dbconn.Open(); //Open connection to the database.
+            dbconn.Open(); 
             IDbCommand dbcmd = dbconn.CreateCommand();
             string sqlQuery = "SELECT nombre, correo, contra " + "FROM Usuarios where nombre =" + Search_by_id;// table name
             dbcmd.CommandText = sqlQuery;
@@ -210,12 +193,11 @@ public class Android : MonoBehaviour
         }
 
     }
-    //Update on  Database 
     private void update_function(string nombre, string correo, string contra)
     {
         using (dbconn = new SqliteConnection(conn))
         {
-            dbconn.Open(); //Open connection to the database.
+            dbconn.Open(); 
             dbcmd = dbconn.CreateCommand();
             sqlQuery = string.Format("UPDATE Usuarios set nombre = @name , correo = @address , contra = @contra where nombre = @nm ");
 
@@ -232,21 +214,18 @@ public class Android : MonoBehaviour
             dbcmd.CommandText = sqlQuery;
             dbcmd.ExecuteScalar();
             dbconn.Close();
-            //Search_function(t_id.text);
         }
 
-        // SceneManager.LoadScene("home");
     }
 
 
 
-    //Delete
     private void Delete_function(string Delete_by_id)
     {
         using (dbconn = new SqliteConnection(conn))
         {
 
-            dbconn.Open(); //Open connection to the database.
+            dbconn.Open(); 
             IDbCommand dbcmd = dbconn.CreateCommand();
             string sqlQuery = "DELETE FROM Staff where id =" + Delete_by_id;// table name
             dbcmd.CommandText = sqlQuery;
@@ -266,7 +245,6 @@ public class Android : MonoBehaviour
         login.SetActive(true);
         registrar.SetActive(false);
     }
-    // Update is called once per frame
     void Update()
     {
 
